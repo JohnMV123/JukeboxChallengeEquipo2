@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   web:
     build:
@@ -14,6 +12,29 @@ services:
       - "1080:80"
     depends_on:
       - web
+      - api
+      - stream
+    networks:
+      - appnet  
+
+  api:
+    build:
+      context: ./api
+    ports:
+      - "8080:8080"
+    networks:
+      - appnet
+
+  stream:
+    build:
+      context: ./stream
+    ports:
+      - "4000:3000"
+    networks:
+      - appnet
 
   redis:
     image: redis:7
+networks:
+  appnet:
+    driver: bridge
